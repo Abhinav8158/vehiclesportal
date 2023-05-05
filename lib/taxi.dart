@@ -1,62 +1,80 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vehicleportaladmin/view.dart';
 import 'booking trans.dart';
-
+import 'con.dart';
 
 class Taxi extends StatefulWidget {
-  const Taxi({Key? key}) : super(key: key);
+  Taxi({Key? key}) : super(key: key);
 
   @override
-  State<Taxi> createState() => TaxiState();
+  State<Taxi> createState() => _TaxiState();
 }
 
-class TaxiState extends State<Taxi> {
+class _TaxiState extends State<Taxi> {
+
+
+  Future<dynamic> getData() async {
+    print('object');
+    var response = await get(Uri.parse('${Con.url}viewtransc.php'));
+    print(response.body);
+    var res = jsonDecode(response.body);
+    print(res);
+    return res;
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
-        title: Text("Select TAXI "),
-
+        title: Text("Select Taxi",style: TextStyle(color: Colors.black),),
+        // backgroundColor: Color(0xFF84EE9),
         centerTitle: true,
+
       ),
 
-
-      body:ListView.separated(itemBuilder: (context,index){
-        return Card(
-          child: ListTile(
-            leading: Container(
-                height: 50,
-                width: 50,
-                // color: Colors.cyanAccent,
-                child: Image.network("https://www.google.com/imgres?imgurl=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Fyellow-taxi-car-model-isolated-white-168579445.jpg&tbnid=hnP-9fVk1dtZOM&vet=10COsBEDMowgFqFwoTCKj62u6Hof4CFQAAAAAdAAAAABAD..i&imgrefurl=https%3A%2F%2Fwww.dreamstime.com%2Fphotos-images%2Ftaxi.html&docid=kT0UkZVVi6aaXM&w=800&h=536&q=taxi%20image&ved=0COsBEDMowgFqFwoTCKj62u6Hof4CFQAAAAAdAAAAABAD")
-              // decoration: BoxDecoration(
-              // image: DecorationImage(
-              // image: AssetImage(
-              // 'https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=415&q=80'),
-              // fit: BoxFit.fill,
-              // ),
-              // shape: BoxShape.circle,
-              // ),
-            ),
-            title: Text("Taxi,${index+1}") ,
-            subtitle: Text("Car"),
-            trailing: Icon(
-              Icons.arrow_forward_ios,
-            ),
-            onTap: (){
-              print("on tap pressed");
-              Navigator.push(context,MaterialPageRoute(builder: (context)=>Bok()));
+      body: FutureBuilder(
+        future: getData(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(snapshot.data![index]['vehicle']),
+                // subtitle: Text(snapshot.data![0]['price']),
+                leading: Image.network(
+                  'https://thumbs.dreamstime.com/z/little-baby-crawl-reading-big-book-isolated-white-background-baby-student-100046244.jpg',
+                  width: 80,
+                  height: 80,
+                ),
+                trailing: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return Bok(
+                            id: snapshot.data![0]['transportation_id']);
+                      },
+                    ));
+                  },
+                  child: Text("book"),
+                ),
+              );
             },
-          ),
-        );
-      },
-          separatorBuilder: (context,index) {
-            return Divider();
-          },
-          itemCount: 40),
+          );
+        },
+      ),
     );
   }
 }

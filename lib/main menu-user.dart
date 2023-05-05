@@ -21,6 +21,7 @@ class _MainmenuState extends State<Mainmenu> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+
           // title:Text("Get start"),
           // centerTitle: true,
           leading: Icon(
@@ -32,11 +33,14 @@ class _MainmenuState extends State<Mainmenu> {
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListView(
+
             children: [
+
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(onPressed: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context)=> Locations()));
+
                 }, child: Text("YOUR LOCATION"),
                 ),
               ),

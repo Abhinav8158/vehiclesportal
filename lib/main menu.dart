@@ -24,7 +24,7 @@ class _Mainmenu1State extends State<Mainmenu1> {
         leading: Icon(
             Icons.home
         ),
-        actions: [Icon(   Icons.logout,),
+        actions: [Icon(   Icons.logout,)
         ],
       ),
       body: ListView(

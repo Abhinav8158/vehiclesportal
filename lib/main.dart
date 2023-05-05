@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vehicleportaladmin/view.dart';
-
 import 'home.dart';
 import 'login.dart';
 import 'main menu-user.dart';

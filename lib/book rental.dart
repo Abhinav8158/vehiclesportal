@@ -78,7 +78,7 @@ class _BokrentState extends State<Bokrent> {
                       borderRadius: BorderRadius.circular(30.0),
 
                     ),
-                    labelText:"From",hintText: "From",
+                    labelText:"date",hintText: "date",
                   ),
                   keyboardType: TextInputType.name,
                 ),
@@ -94,7 +94,7 @@ class _BokrentState extends State<Bokrent> {
                       borderRadius: BorderRadius.circular(30.0),
 
                     ),
-                    labelText:"To",hintText: "To",
+                    labelText:"last date",hintText: "lastdate",
                   ),
                   keyboardType: TextInputType.name,
                 ),

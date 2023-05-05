@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 
 import 'add rental.dart';
+import 'con.dart';
 import 'main menu-user.dart';
 import 'main menu.dart';
 
@@ -22,6 +23,7 @@ class _AddtransState extends State<Addtrans> {
 
   var vehicle = TextEditingController();
   var location = TextEditingController();
+  var seat =TextEditingController();
   var RC = TextEditingController();
   var insurance = TextEditingController();
   var driving_licence = TextEditingController();
@@ -29,16 +31,17 @@ class _AddtransState extends State<Addtrans> {
 
   Future<void> getData() async {
     var data = {
-      "type_of_vehicle": vehicle.text,
+      "vehicle": vehicle.text,
+      "number_of_seats":seat.text,
       "location": location.text,
       "RC": RC.text,
       "insurance": insurance.text,
-      "driving_licence": driving_licence.text,
+      "dl": driving_licence.text,
       "upload_photo": upload_photo.text,
 
     };
     print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$data');
-    var response = await post(Uri.parse('http://192.168.68.114/vehicle portal -provider/add transportation.php'), body: data);
+    var response = await post(Uri.parse('${Con.url}add transportation.php'), body: data);
     print(response.body);
     if (response.statusCode == 200) {
       var res = jsonDecode(response.body)["message"];
@@ -48,7 +51,7 @@ class _AddtransState extends State<Addtrans> {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
         // Fluttertoast.showToast(msg: 'Successfully added...');
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return Addtrans();
+          return Mainmenu1();
         }
         ));
       }
@@ -78,6 +81,28 @@ class _AddtransState extends State<Addtrans> {
                   decoration: InputDecoration(
                       border:OutlineInputBorder(),
                       labelText: "Type of vehicle",hintText: "enter your vehicle type"
+                  ),
+                ),
+              ),
+            ),
+            Padding(padding: EdgeInsets.all(10),
+              child:Card(
+                child: TextField(
+                  controller: seat,
+                  decoration: InputDecoration(
+                      border:OutlineInputBorder(),
+                      labelText: "seat",hintText: "enter number of seats"
+                  ),
+                ),
+              ),
+            ),
+            Padding(padding: EdgeInsets.all(10),
+              child:Card(
+                child: TextField(
+                  controller: seat,
+                  decoration: InputDecoration(
+                      border:OutlineInputBorder(),
+                      labelText: "price",hintText: "price"
                   ),
                 ),
               ),

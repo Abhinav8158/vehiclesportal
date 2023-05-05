@@ -1,11 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
-
-import 'main menu-user.dart';
+import 'con.dart';
 import 'main menu.dart';
 
 class Addrental extends StatefulWidget {
@@ -17,6 +15,12 @@ class Addrental extends StatefulWidget {
 
 class _AddrentalState extends State<Addrental> {
 
+  // XFile? image;
+  // File? pickedImage;
+  // final ImagePicker picker = ImagePicker();
+
+  var name = TextEditingController();
+  var price = TextEditingController();
   var vehicle = TextEditingController();
   var gear = TextEditingController();
   var color = TextEditingController();
@@ -30,7 +34,9 @@ class _AddrentalState extends State<Addrental> {
 
   Future<void> getData() async {
   var data = {
-  "type_of_vehicle": vehicle.text,
+    "name": name.text,
+    "price": price.text,
+  "vehicle_type": vehicle.text,
     "type_of_gear": gear.text,
     "color_of_vehicle": color.text,
     "seats_of_vehicle": seat.text,
@@ -43,7 +49,7 @@ class _AddrentalState extends State<Addrental> {
 
   };
   print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$data');
-  var response = await post(Uri.parse('http://192.168.68.114/vehicle portal -provider/add rental.php'), body: data);
+  var response = await post(Uri.parse('${Con.url}add rental.php'), body: data);
   print(response.body);
   if (response.statusCode == 200) {
   var res = jsonDecode(response.body)["message"];
@@ -53,7 +59,7 @@ class _AddrentalState extends State<Addrental> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
    // Fluttertoast.showToast(msg: 'Successfully added...');
   Navigator.push(context, MaterialPageRoute(builder: (context) {
-  return Addrental();
+  return Mainmenu1();
   }
   ));
   }
@@ -77,18 +83,41 @@ centerTitle: true,
       body: Center(
       child: ListView(
         children:[
-          // Expanded(child: Text('ADD rental vehicles', style:  TextStyle(height: 3.0, fontSize: 15.2, fontWeight: FontWeight.bold,))),
           Padding(padding: EdgeInsets.all(10),
-          child:Card(
-            child: TextField(
-              controller: vehicle,
-              decoration: InputDecoration(
-                border:OutlineInputBorder(),
-                labelText: "Type of vehicle",hintText: "enter your vehicle type"
+            child:Card(
+              child: TextField(
+                controller: name,
+                decoration: InputDecoration(
+                    border:OutlineInputBorder(),
+                    labelText: "vehicle name",hintText: "enter your vehicle name"
+                ),
               ),
             ),
           ),
+          Padding(padding: EdgeInsets.all(10),
+            child:Card(
+              child: TextField(
+                controller: price,
+                decoration: InputDecoration(
+                    border:OutlineInputBorder(),
+                    labelText: "Price",hintText: "enter price"
+                ),
+              ),
             ),
+          ),
+          Padding(padding: EdgeInsets.all(10),
+            child:Card(
+              child: TextField(
+                controller: vehicle,
+                decoration: InputDecoration(
+                    border:OutlineInputBorder(),
+                    labelText: "Type of vehicle",hintText: "enter your vehicle type"
+                ),
+              ),
+            ),
+          ),
+          // Expanded(child: Text('ADD rental vehicles', style:  TextStyle(height: 3.0, fontSize: 15.2, fontWeight: FontWeight.bold,))),
+
           Padding(padding: EdgeInsets.all(10),
             child:Card(
               child: TextField(
@@ -106,7 +135,7 @@ centerTitle: true,
                 controller: color,
                 decoration: InputDecoration(
                     border:OutlineInputBorder(),
-                    labelText: "vehicle",hintText: "enter color of vehicle"
+                    labelText: "color",hintText: "enter color of vehicle"
                 ),
               ),
             ),
@@ -146,21 +175,46 @@ centerTitle: true,
           Padding(padding: EdgeInsets.all(10),
             child:Card(
               child: TextField(
-                controller: RC,
+                controller: location,
                 decoration: InputDecoration(
                     border:OutlineInputBorder(),
-                    labelText: "RC",hintText: "enter your RC no:"
+                    labelText: "RC",hintText: "upload RC"
                 ),
               ),
             ),
           ),
+          // Padding(
+          //   padding: const EdgeInsets.all(22.0),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       Text(
+          //         'RC',
+          //         style: TextStyle(fontSize: 15),
+          //       ),
+          //       FloatingActionButton(
+          //         onPressed: () async {
+          //           File? temp = (await Services.pickImage(context)) as File?;
+          //           setState(() {
+          //              pickedImage = temp;
+          //           });
+          //          // print(pickedImage!.path);
+          //         },
+          //         child: Icon(Icons.camera_alt),
+          //       ),
+          //       // image == null ? Text('no image') : Image.file(image!),
+          //     ],
+          //   ),
+          // ),
+
+
           Padding(padding: EdgeInsets.all(10),
             child:Card(
               child: TextField(
                 controller: insurance,
                 decoration: InputDecoration(
                     border:OutlineInputBorder(),
-                    labelText: "Insurance",hintText: "enter your policy no;"
+                    labelText: "Insurance",hintText: "upload insurance;"
                 ),
               ),
             ),
@@ -171,7 +225,7 @@ centerTitle: true,
                 controller: driving_licence,
                 decoration: InputDecoration(
                     border:OutlineInputBorder(),
-                    labelText: "driving licencd",hintText: "enter your licence no"
+                    labelText: "driving licencd",hintText: "upload licence"
                 ),
               ),
             ),
@@ -182,7 +236,7 @@ centerTitle: true,
                 controller: upload_photo,
                 decoration: InputDecoration(
                     border:OutlineInputBorder(),
-                    labelText: "Upload photo",hintText: "Upload file"
+                    labelText: "Upload photo",hintText: "Upload photo"
                 ),
               ),
             ),

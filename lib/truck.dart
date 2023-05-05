@@ -1,62 +1,76 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-
+import 'package:http/http.dart';
 import 'booking trans.dart';
-
+import 'con.dart';
 
 class Truck extends StatefulWidget {
-  const Truck({Key? key}) : super(key: key);
+  Truck({Key? key}) : super(key: key);
 
   @override
-  State<Truck> createState() => TruckState();
+  State<Truck> createState() => _TruckState();
 }
 
-class TruckState extends State<Truck> {
+class _TruckState extends State<Truck> {
+
+
+  Future<dynamic> getData() async {
+    print('object');
+    var response = await get(Uri.parse('${Con.url}viewtransd.php'));
+    print(response.body);
+    var res = jsonDecode(response.body);
+    print(res);
+    return res;
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
-        title: Text("Select Truck "),
-
+        title: Text("Select Truck",style: TextStyle(color: Colors.black),),
+        // backgroundColor: Color(0xFF84EE9),
         centerTitle: true,
+
       ),
 
-
-      body:ListView.separated(itemBuilder: (context,index){
-        return Card(
-          child: ListTile(
-            leading: Container(
-                height: 50,
-                width: 50,
-                // color: Colors.cyanAccent,
-                child: Image.network("https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.mahindratruckandbus.com%2Fenglish%2Fimages%2Fhcv%2Fhaulage%2Fblazo-x-35%2Fblazo-x-35.jpg&tbnid=WAULJp897voj5M&vet=12ahUKEwjbz8q1iKH-AhUvHrcAHcF0CnwQMygLegUIARCBAg..i&imgrefurl=https%3A%2F%2Fwww.mahindratruckandbus.com%2Fenglish%2Fheavy-commercial-vehicles%2Fmultiaxle-rigid-trucks.aspx&docid=_axp30XGFeXFUM&w=463&h=302&q=truck%20image&ved=2ahUKEwjbz8q1iKH-AhUvHrcAHcF0CnwQMygLegUIARCBAg")
-              // decoration: BoxDecoration(
-              // image: DecorationImage(
-              // image: AssetImage(
-              // 'https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=415&q=80'),
-              // fit: BoxFit.fill,
-              // ),
-              // shape: BoxShape.circle,
-              // ),
-            ),
-            title: Text("TRUCK,${index+1}") ,
-            subtitle: Text("Load King"),
-            trailing: Icon(
-              Icons.arrow_forward_ios,
-            ),
-            onTap: (){
-              print("on tap pressed");
-              Navigator.push(context,MaterialPageRoute(builder: (context)=>Bok()));
+      body: FutureBuilder(
+        future: getData(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(snapshot.data![index]['vehicle']),
+                // subtitle: Text(snapshot.data![0]['price']),
+                leading: Image.network(
+                  'https://thumbs.dreamstime.com/z/little-baby-crawl-reading-big-book-isolated-white-background-baby-student-100046244.jpg',
+                  width: 80,
+                  height: 80,
+                ),
+                trailing: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return Bok(
+                            id: snapshot.data![0]['transportation_id']);
+                      },
+                    ));
+                  },
+                  child: Text("book"),
+                ),
+              );
             },
-          ),
-        );
-      },
-          separatorBuilder: (context,index) {
-            return Divider();
-          },
-          itemCount: 10),
+          );
+        },
+      ),
     );
   }
 }
