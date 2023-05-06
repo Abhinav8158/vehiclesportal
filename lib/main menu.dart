@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:vehicleportaladmin/feedback.dart';
 import 'package:vehicleportaladmin/notification.dart';
 import 'package:vehicleportaladmin/payment.dart';
 
 import 'add rental.dart';
 import 'add transportatio.dart';
+import 'login.dart';
 
 class Mainmenu1 extends StatefulWidget {
   const Mainmenu1({Key? key}) : super(key: key);
@@ -24,8 +26,16 @@ class _Mainmenu1State extends State<Mainmenu1> {
         leading: Icon(
             Icons.home
         ),
-        actions: [Icon(   Icons.logout,)
-        ],
+          actions: [
+            InkWell(
+                onTap:(){
+                  Fluttertoast.showToast(msg:"logout successfully");
+                  Navigator.push(context,MaterialPageRoute(builder: (context)=>Homelog()));
+                },
+                child:Icon(   Icons.logout,)
+
+            ),
+          ]
       ),
       body: ListView(
         children: [

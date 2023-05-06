@@ -1,8 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vehicleportaladmin/services.dart';
 import 'con.dart';
 import 'main menu.dart';
 
@@ -15,9 +19,9 @@ class Addrental extends StatefulWidget {
 
 class _AddrentalState extends State<Addrental> {
 
-  // XFile? image;
-  // File? pickedImage;
-  // final ImagePicker picker = ImagePicker();
+  XFile? image;
+  File? pickedImage;
+  final ImagePicker picker = ImagePicker();
 
   var name = TextEditingController();
   var price = TextEditingController();
@@ -32,43 +36,88 @@ class _AddrentalState extends State<Addrental> {
   var driving_licence = TextEditingController();
   var upload_photo = TextEditingController();
 
-  Future<void> getData() async {
-  var data = {
-    "name": name.text,
-    "price": price.text,
-  "vehicle_type": vehicle.text,
-    "type_of_gear": gear.text,
-    "color_of_vehicle": color.text,
-    "seats_of_vehicle": seat.text,
-    "fuel_of_vehicle": fuel.text,
-  "location": location.text,
-  "RC": RC.text,
-  "insurance": insurance.text,
-  "driving_licence": driving_licence.text,
-  "upload_photo": upload_photo.text,
+  addphoto(BuildContext context) async{
+    SharedPreferences spref=await SharedPreferences.getInstance();
+    var sp=spref.getString('regi_id');
+    print(sp);
+    if (pickedImage != null) {
+      final data = await Services.postWithIamge(
+          endPoint: 'add_rental.php.php',
+          params: {
+            "id":sp,
+            "name": name.text,
+            "price": price.text,
+            "vehicle_type": vehicle.text,
+            "type_of_gear": gear.text,
+            "color_of_vehicle": color.text,
+            "seats_of_vehicle": seat.text,
+            "fuel_of_vehicle": fuel.text,
+            "location": location.text,
+            "RC": RC.text,
+            "insurance": insurance.text,
+            "driving_licence": driving_licence.text,
+            "upload_photo": upload_photo.text,
+          },
+          image: pickedImage!,
+          imageParameter: 'photo');
 
-  };
-  print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$data');
-  var response = await post(Uri.parse('${Con.url}add rental.php'), body: data);
-  print(response.body);
-  if (response.statusCode == 200) {
-  var res = jsonDecode(response.body)["message"];
-  if (res == 'successfully added') {
-   const snackBar = SnackBar(content: Text("successfully added"),
-   );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-   // Fluttertoast.showToast(msg: 'Successfully added...');
-  Navigator.push(context, MaterialPageRoute(builder: (context) {
-  return Mainmenu1();
-  }
-  ));
-  }
-  else {
-     Fluttertoast.showToast(msg: 'Invalid ');
-  }
+      if ((data as Map)['message'] == 'added') {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (_) => Mainmenu1(),
+          ),
+        );
+      } else {
+        Fluttertoast.showToast(msg:' added');
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) {
+            return Mainmenu1();
+          },
+        ));
+      }
+    } else {
+      Fluttertoast.showToast(msg: 'Pick image ');
+    }
   }
 
-  }
+
+  // Future<void> getData() async {
+  // var data = {
+  //   "name": name.text,
+  //   "price": price.text,
+  // "vehicle_type": vehicle.text,
+  //   "type_of_gear": gear.text,
+  //   "color_of_vehicle": color.text,
+  //   "seats_of_vehicle": seat.text,
+  //   "fuel_of_vehicle": fuel.text,
+  // "location": location.text,
+  // "RC": RC.text,
+  // "insurance": insurance.text,
+  // "driving_licence": driving_licence.text,
+  // "upload_photo": upload_photo.text,
+  //
+  // };
+  // print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$data');
+  // var response = await post(Uri.parse('${Con.url}add rental.php'), body: data);
+  // print(response.body);
+  // if (response.statusCode == 200) {
+  // var res = jsonDecode(response.body)["message"];
+  // if (res == 'successfully added') {
+  //  const snackBar = SnackBar(content: Text("successfully added"),
+  //  );
+  //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  //  // Fluttertoast.showToast(msg: 'Successfully added...');
+  // Navigator.push(context, MaterialPageRoute(builder: (context) {
+  // return Mainmenu1();
+  // }
+  // ));
+  // }
+  // else {
+  //    Fluttertoast.showToast(msg: 'Invalid ');
+  // }
+  // }
+  //
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -172,77 +221,102 @@ centerTitle: true,
               ),
             ),
           ),
-          Padding(padding: EdgeInsets.all(10),
-            child:Card(
-              child: TextField(
-                controller: location,
-                decoration: InputDecoration(
-                    border:OutlineInputBorder(),
-                    labelText: "RC",hintText: "upload RC"
+          Padding(
+            padding: const EdgeInsets.all(22.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Upload RC',
+                  style: TextStyle(fontSize: 15),
                 ),
-              ),
+                FloatingActionButton(
+                  onPressed: () async {
+                    File? temp = await Services.pickImage(context);
+                    setState(() {
+                      pickedImage = temp;
+                    });
+                    print(pickedImage!.path);
+                  },
+                  child: Icon(Icons.camera_alt),
+                ),
+                // image == null ? Text('no image') : Image.file(image!),
+              ],
             ),
           ),
-          // Padding(
-          //   padding: const EdgeInsets.all(22.0),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: [
-          //       Text(
-          //         'RC',
-          //         style: TextStyle(fontSize: 15),
-          //       ),
-          //       FloatingActionButton(
-          //         onPressed: () async {
-          //           File? temp = (await Services.pickImage(context)) as File?;
-          //           setState(() {
-          //              pickedImage = temp;
-          //           });
-          //          // print(pickedImage!.path);
-          //         },
-          //         child: Icon(Icons.camera_alt),
-          //       ),
-          //       // image == null ? Text('no image') : Image.file(image!),
-          //     ],
-          //   ),
-          // ),
 
 
-          Padding(padding: EdgeInsets.all(10),
-            child:Card(
-              child: TextField(
-                controller: insurance,
-                decoration: InputDecoration(
-                    border:OutlineInputBorder(),
-                    labelText: "Insurance",hintText: "upload insurance;"
+          Padding(
+            padding: const EdgeInsets.all(22.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Upload Insurance',
+                  style: TextStyle(fontSize: 15),
                 ),
-              ),
+                FloatingActionButton(
+                  onPressed: () async {
+                    File? temp = await Services.pickImage(context);
+                    setState(() {
+                      pickedImage = temp;
+                    });
+                    print(pickedImage!.path);
+                  },
+                  child: Icon(Icons.camera_alt),
+                ),
+                // image == null ? Text('no image') : Image.file(image!),
+              ],
             ),
           ),
-          Padding(padding: EdgeInsets.all(10),
-            child:Card(
-              child: TextField(
-                controller: driving_licence,
-                decoration: InputDecoration(
-                    border:OutlineInputBorder(),
-                    labelText: "driving licencd",hintText: "upload licence"
+          Padding(
+            padding: const EdgeInsets.all(22.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Upload driving licence',
+                  style: TextStyle(fontSize: 15),
                 ),
-              ),
+                FloatingActionButton(
+                  onPressed: () async {
+                    File? temp = await Services.pickImage(context);
+                    setState(() {
+                      pickedImage = temp;
+                    });
+                    print(pickedImage!.path);
+                  },
+                  child: Icon(Icons.camera_alt),
+                ),
+                // image == null ? Text('no image') : Image.file(image!),
+              ],
             ),
           ),
-          Padding(padding: EdgeInsets.all(10),
-            child:Card(
-              child: TextField(
-                controller: upload_photo,
-                decoration: InputDecoration(
-                    border:OutlineInputBorder(),
-                    labelText: "Upload photo",hintText: "Upload photo"
+          Padding(
+            padding: const EdgeInsets.all(22.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Upload photo',
+                  style: TextStyle(fontSize: 15),
                 ),
-              ),
+                FloatingActionButton(
+                  onPressed: () async {
+                    File? temp = await Services.pickImage(context);
+                    setState(() {
+                      pickedImage = temp;
+                    });
+                    print(pickedImage!.path);
+                  },
+                  child: Icon(Icons.camera_alt),
+                ),
+                // image == null ? Text('no image') : Image.file(image!),
+              ],
             ),
           ),
           ElevatedButton(onPressed: (){
-            getData();
+            addphoto(context);
           }, child: Text("ADD"))
         ],
       ),

@@ -19,7 +19,7 @@ class _HomeeeState extends State<Homeee> {
   final pages=[
     Mainmenu1(),
     // Mainmenu(),
-    payment(),
+
     // Devprofile(),
     Viewpro(),
 
@@ -47,14 +47,12 @@ class _HomeeeState extends State<Homeee> {
             ),
             label:"Home",
             backgroundColor: Colors.black,),
-          BottomNavigationBarItem(icon: Icon(
-            Icons.currency_rupee_sharp,
-          ),
-              label:"payments"),
+
           BottomNavigationBarItem(icon: Icon(
             Icons.person,
           ),
               label:"profile"),
+
         ],
       ),
 

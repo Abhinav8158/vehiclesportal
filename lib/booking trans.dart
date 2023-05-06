@@ -10,13 +10,15 @@ import 'con.dart';
 
 
 class Bok extends StatefulWidget {
-  String? id;
-  Bok({Key? key, required this.id}) : super(key: key);
+
+const  Bok({Key? key,}) : super(key: key);
 
 
   @override
   State<Bok> createState() => _BokState();
 }
+final List1=[
+  'Bus','Auto','Taxi'];
 
 class _BokState extends State<Bok> {
   var name = TextEditingController();
@@ -31,7 +33,7 @@ class _BokState extends State<Bok> {
   Future<void> getData() async {
     var data = {
       "name": name.text,
-      "phone number": phone_no.text,
+      "phone_no": phone_no.text,
       "address": address.text,
       "from": from.text,
       "destination": destination.text,
@@ -73,7 +75,7 @@ class _BokState extends State<Bok> {
         child: ListView(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
+              padding: const EdgeInsets.only(left:10.0,right: 10.0,top:10.0),
               child: Container(
                 width: 100,
                 child: TextField(
@@ -90,7 +92,7 @@ class _BokState extends State<Bok> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
+              padding: const EdgeInsets.only(left:10.0,right: 10.0,top:10.0),
               child: Container(
                 width: 100,
                 child: TextField(
@@ -107,7 +109,7 @@ class _BokState extends State<Bok> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
+              padding: const EdgeInsets.only(left:10.0,right: 10.0,top:10.0),
               child: Container(
                 width: 100,
                 child: TextField(
@@ -124,7 +126,7 @@ class _BokState extends State<Bok> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
+              padding: const EdgeInsets.only(left:10.0,right: 10.0,top:10.0),
               child: Container(
                 width: 100,
                 child: TextField(
@@ -141,7 +143,7 @@ class _BokState extends State<Bok> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
+              padding: const EdgeInsets.only(left:10.0,right: 10.0,top:10.0),
               child: Container(
                 width: 100,
                 child: TextField(
@@ -158,72 +160,86 @@ class _BokState extends State<Bok> {
               ),
             ),
 
-            Padding(
-              padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
-              child: Container(
-                width: 100,
-                child: TextField(
-                  controller:date,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
+        Padding(
+          padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+          child: Container(
+            width: 100,
+            child: TextField(
+              controller: date,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                labelText: "Date",
+                hintText: "Date",
+              ),
+              keyboardType: TextInputType.datetime,
+              onTap: () async {
+                DateTime? datepick = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime(2025),
+                );
+                if (datepick != null) {
+                  print('Date selected: ${datepick.year}-${datepick.month}-${datepick.day}');
+                }
+              },
+            ),
+          ),
+        ),
 
-                    ),
-                    labelText:"Date",hintText: "Date",
-                  ),
-                  keyboardType: TextInputType.name,
+        Padding(
+          padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+          child: Container(
+            width: 100,
+            child: TextField(
+              controller: time,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                labelText: "Time",
+                hintText: "Time",
+                suffixIcon: IconButton(
+                  onPressed: () async {
+                    TimeOfDay? timepick = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                      initialEntryMode: TimePickerEntryMode.input,
+                    );
+                    if (timepick != null) {
+                      print("Time selected: ${timepick.hour}:${timepick.minute}");
+                    }
+                  },
+                  icon: Icon(Icons.timer),
                 ),
               ),
+              keyboardType: TextInputType.datetime,
             ),
+          ),
+        ),
             Padding(
-              padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
-              child: Container(
-                width: 100,
-                child: TextField(
-                  controller:time,
-                  decoration: InputDecoration(
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),              child:DropdownButtonFormField(
+                decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
-                    ),
-                    labelText:"Time",hintText: "Time ",
-                  ),
-                  keyboardType: TextInputType.number,
+                    )
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
-              child: Container(
-                width: 100,
-                child: TextField(
-                  controller:vehicle,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                    labelText:"Vehicle",hintText: "Vehicle",
-                  ),
-                  keyboardType: TextInputType.text,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
-              child: Container(
-                width: 100,
-                child: TextField(
-                  controller:payment,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
 
-                    ),
-                    labelText:"Payment",hintText: "Payment",
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                ),
-              ),
+
+                hint: Text('Select Vehicle'),
+                items:List1.map((e) {
+                  return DropdownMenuItem(
+                      value: e,
+                      child:Text(e));
+                }).toList(), onChanged: (value){}),
+
+
             ),
+
+
+
             // Padding(
             //   padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
             //   child: Container(
@@ -242,7 +258,7 @@ class _BokState extends State<Bok> {
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(onPressed: (){
                   getData();
-                }, child: Text("Submit"))
+                }, child: Text("payment"))
             ),
           ],
         ),

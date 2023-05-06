@@ -34,33 +34,33 @@ class _RegisterState extends State<Register> {
   Future<void> getData() async {
     var data = {
       "type": type.text,
-      "firstname": name.text,
+      "first_name": name.text,
       "Last_name": lname.text,
-      "Street_address": address.text,
+      "street_address": address.text,
       "city": city.text,
       "state": state.text,
-      "Pin": pin.text,
+      "pin": pin.text,
       "Phone number": phonenumber.text,
       "Email": email.text,
       "Password": password.text,
     };
-    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$data');
-    var response = await post(Uri.parse('${Con.url}register.php'), body: data);
-    print(response.body);
-    if (response.statusCode == 200) {
-      var res = jsonDecode(response.body)["message"];
-      if (res == 'added') {
-        const snackBar = SnackBar(content: Text("successfully registered"),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return Homelog();
+    if (formkey.currentState!.validate()) {
+      print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$data');
+      var response = await post(
+          Uri.parse('${Con.url}register.php'), body: data);
+      print(response.body);
+      if (response.statusCode == 200) {
+        var res = jsonDecode(response.body)["message"];
+        if (res == 'added') {
+          const snackBar = SnackBar(content: Text("successfully registered"),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return Homelog();
+          }
+          ));
         }
-        ));
       }
-    }
-    else {
-
     }
   }
 
@@ -115,66 +115,75 @@ class _RegisterState extends State<Register> {
               //     ),
               //   ),
               // ),
-              Padding(
-                padding: const EdgeInsets.only(left:10.0,right: 10.0,top:10.0),
-                child: Container(
 
-                  child: TextField(
-                    controller: name,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-
-                      ),
-                      labelText:"First Name",hintText: "First Name ",
-                    ),
-                    keyboardType: TextInputType.name,
-
+           Padding(
+            padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+            child: Container(
+              child: TextFormField(
+                controller: name,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
                   ),
+                  labelText: "First Name",
+                  hintText: "First Name",
                 ),
+                keyboardType: TextInputType.name,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'First name is required';
+                  }
+                  return null;
+                },
               ),
-              Padding(
-                padding: const EdgeInsets.only(left:10.0,right: 10.0,top:10.0),
-                child: Container(
+            ),
+          ),
 
-                  child: TextFormField(
-                    controller: lname,
-                    decoration: InputDecoration(
 
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+                      child: Container(
+                        child: TextFormField(
+                          controller: lname,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            labelText: "Last Name",
+                            hintText: "Last Name",
+                          ),
+                          keyboardType: TextInputType.name,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Last name is required';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
-                      labelText:"Last Name",hintText: "Last Name ",
                     ),
-                    keyboardType: TextInputType.name,
-
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your name';
-                      }
-                      return null;
-                    },
-                  ),
-                  ),
-                ),
-              Padding(
-                padding: const EdgeInsets.only(left:10.0,right: 10.0,top:10.0),
-                child: Container(
-
-                  child: TextFormField(
-                    controller: address,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+                      child: Container(
+                        child: TextFormField(
+                          controller: address,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            labelText: "Address",
+                            hintText: "Address",
+                          ),
+                          keyboardType: TextInputType.name,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Address is required';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
-                      labelText:"street address",hintText: "street address ",
                     ),
-                    keyboardType: TextInputType.name,
-                  ),
-                ),
-              ),
               // Padding(
               //   padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
               //   child: Container(
@@ -191,77 +200,104 @@ class _RegisterState extends State<Register> {
               //     ),
               //   ),
               // ),
-              Padding(
-                padding: const EdgeInsets.only(left:10.0,right: 10.0,top:10.0),
-                child: Container(
-
-                  child: TextField(
-                    controller: city,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+                      child: Container(
+                        child: TextFormField(
+                          controller: city,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            labelText: "City",
+                            hintText: "City",
+                          ),
+                          keyboardType: TextInputType.name,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'City is required';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
-                      labelText:"city",hintText: "city",
                     ),
-                    keyboardType: TextInputType.name,
-                  ),
-                ),
-              ),
 
-              Padding(
-                padding: const EdgeInsets.only(left:10.0,right: 10.0,top:10.0),
-                child: Container(
-
-                  child: TextField(
-                    controller: state,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+                      child: Container(
+                        child: TextFormField(
+                          controller: state,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            labelText: "State",
+                            hintText: "State",
+                          ),
+                          keyboardType: TextInputType.name,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'State is required';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
-                      labelText:"state",hintText: "state",
                     ),
-                    keyboardType: TextInputType.name,
-                  ),
-                ),
-              ),
-              Padding(
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+                      child: Container(
+                        child: TextFormField(
+                          controller: pin,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            labelText: "Pin",
+                            hintText: "Pin",
+                          ),
+                          keyboardType: TextInputType.name,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Pin is required';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+                      child: Container(
+                        child: TextFormField(
+                          controller: phonenumber,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            labelText: "Phone number",
+                            hintText: "Phone number",
+                          ),
+                          keyboardType: TextInputType.number,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Phone number is required";
+                            }
+                            if (value.length != 10) {
+                              return "Please enter a valid 10-digit phone number";
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ),
+
+                    Padding(
                 padding: const EdgeInsets.only(left:10.0,right: 10.0,top:10.0),
                 child: Container(
 
-                  child: TextField(
-                    controller: pin,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      labelText:"Pin",hintText: "Pin ",
-                    ),
-                    keyboardType: TextInputType.number,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left:10.0,right: 10.0,top:10.0),
-                child: Container(
-                  child: TextField(
-                    controller: phonenumber,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      labelText:"Phone number",hintText: "Phone number",
-                    ),
-                    keyboardType: TextInputType.number,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left:10.0,right: 10.0,top:10.0),
-                child: Container(
-
-                  child: TextField(
+                  child: TextFormField(
                     controller: email,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -271,6 +307,14 @@ class _RegisterState extends State<Register> {
                       labelText:"Email",hintText: "Email",
                     ),
                     keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Email is required';
+                      } if (!value.contains('@')) {
+                        return 'Enter a valid email';
+                      }
+                      return null;
+                    },
                   ),
                 ),
               ),
@@ -278,6 +322,7 @@ class _RegisterState extends State<Register> {
                 padding: const EdgeInsets.only(left:10.0,right: 10.0,top:10.0),
                 child: Container(
                   child: TextField(
+
                     controller: password,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(

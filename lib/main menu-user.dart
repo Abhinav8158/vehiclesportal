@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:vehicleportaladmin/rental%20-user.dart';
 import 'package:vehicleportaladmin/transportation.dart';
 
 import 'bookings.dart';
 import 'feedback-user.dart';
 import 'location-user.dart';
+import 'login.dart';
 import 'notification-user.dart';
 
 
@@ -27,8 +29,16 @@ class _MainmenuState extends State<Mainmenu> {
           leading: Icon(
               Icons.home
           ),
-          actions: [Icon(   Icons.more_vert,),
-          ],
+          actions: [
+            InkWell(
+        onTap:(){
+              Fluttertoast.showToast(msg:"logout successfully");
+              Navigator.push(context,MaterialPageRoute(builder: (context)=>Homelog()));
+  },
+    child:Icon(   Icons.logout,)
+
+    ),
+    ]
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -69,13 +79,6 @@ class _MainmenuState extends State<Mainmenu> {
               ),
 
 
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(onPressed: (){
-                  // Navigator.push(context, MaterialPageRoute(builder: (context)=> Payment()));
-                }, child: Text("PAYMENT"),
-                ),
-              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(onPressed: (){

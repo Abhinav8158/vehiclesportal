@@ -5,7 +5,10 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'con.dart';
+import 'main menu-user.dart';
 import 'main menu.dart';
+import 'nav bar.dart';
+import 'navbar_user.dart';
 
 class Viewpro extends StatelessWidget {
   const Viewpro({Key? key}) : super(key: key);
@@ -14,7 +17,7 @@ class Viewpro extends StatelessWidget {
 
   Future<dynamic> profileView() async {
     SharedPreferences spref = await SharedPreferences.getInstance();
-    var sp = spref.getString('emp_id');
+    var sp = spref.getString('regi_id');
     print(sp);
 
     var data = {
@@ -39,7 +42,7 @@ class Viewpro extends StatelessWidget {
             icon: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Mainmenu1()));
+                  context, MaterialPageRoute(builder: (context) => nav()));
             },
           ),
         ),
@@ -60,13 +63,13 @@ class Viewpro extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text('firstname'),
-                            Text(snapshot.data![0]['name']),
+                            Text(snapshot.data![0]['first_name']),
                           ]),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text('street address'),
-                            Text(snapshot.data![0]['street address']),
+                            Text(snapshot.data![0]['street_address']),
                           ]),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -84,13 +87,13 @@ class Viewpro extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text('phone number'),
-                            Text(snapshot.data![0]['phone number'])
+                            Text(snapshot.data![0]['Phone_number'])
                           ]),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text('email'),
-                            Text(snapshot.data![0]['email'])
+                            Text(snapshot.data![0]['Email'])
                           ]),
 
 

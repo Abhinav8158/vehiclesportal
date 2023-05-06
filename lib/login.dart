@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,6 +12,7 @@ import 'con.dart';
 import 'main menu-user.dart';
 import 'main menu.dart';
 import 'nav bar.dart';
+import 'navbar_user.dart';
 
 class Homelog extends StatefulWidget {
   const Homelog({Key? key}) : super(key: key);
@@ -23,8 +25,19 @@ class _HomelogState extends State<Homelog> {
 
   var Email = TextEditingController();
   var Password = TextEditingController();
-
+bool validateFields(){
+  if (Email.text .isEmpty) {
+    Fluttertoast.showToast(msg: "please enter email");
+    return false;
+  }
+  if (Password.text.isEmpty){
+    Fluttertoast.showToast(msg: "Please enter password");
+    return false;
+  }
+  return true;
+}
   Future<void> getData() async {
+  if (!validateFields())return;
     var data = {
       "email": Email.text,
       "password": Password.text,
@@ -39,21 +52,23 @@ class _HomelogState extends State<Homelog> {
         print(id);
         final spref = await SharedPreferences.getInstance();
         spref.setString('regi_id', id);
-        Fluttertoast.showToast(msg: 'Successfully login...');
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
+        if (res['type'] == 'user') {
+          Fluttertoast.showToast(msg: 'Successfully logged in as user');
+          Navigator.push(context as BuildContext, MaterialPageRoute(builder: (context) {
+            return nav();
+          }));
+        } else if (res['type'] == 'provider') {
+        Fluttertoast.showToast(msg: 'Successfully logged in as provider');
+        Navigator.push(context as BuildContext, MaterialPageRoute(builder: (context) {
           return Homeee();
-        }
-        ));
-
+        }));
       }
-      else {
-        Fluttertoast.showToast(msg: 'Invalid username or password');
-      }
-    }
-    else {
-      Fluttertoast.showToast(msg: 'Something went wrong!');
+    } else {
+      Fluttertoast.showToast(msg: 'Invalid username or password');
     }
   }
+    }
+
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +90,7 @@ class _HomelogState extends State<Homelog> {
                 padding: const EdgeInsets.only(left:20.0,right: 20.0,top:10.0),
                 child: Container(
                   width: 100,
-                  child: TextField(
+                  child: TextFormField(
                     controller:Email ,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -84,6 +99,14 @@ class _HomelogState extends State<Homelog> {
                       labelText:"Email",hintText: "Email",
                     ),
                     keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Email is required';
+                      } if (!value.contains('@')) {
+                        return 'Enter a valid email';
+                      }
+                      return null;
+                    },
                   ),
                 ),
               ),

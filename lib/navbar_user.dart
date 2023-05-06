@@ -19,7 +19,6 @@ class _navState extends State<nav> {
   final pages=[
     Mainmenu(),
     // Mainmenu(),
-    payment(),
     // Devprofile(),
     Viewpro(),
 
@@ -47,10 +46,7 @@ class _navState extends State<nav> {
             ),
             label:"Home",
             backgroundColor: Colors.black,),
-          BottomNavigationBarItem(icon: Icon(
-            Icons.currency_rupee_sharp,
-          ),
-              label:"viewbooking"),
+
           BottomNavigationBarItem(icon: Icon(
             Icons.person,
           ),

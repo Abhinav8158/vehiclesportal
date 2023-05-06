@@ -63,8 +63,8 @@ class _TaxiState extends State<Taxi> {
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
-                        return Bok(
-                            id: snapshot.data![0]['transportation_id']);
+                        return Bok();
+
                       },
                     ));
                   },

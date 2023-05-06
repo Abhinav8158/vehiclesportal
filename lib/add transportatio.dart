@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
+import 'package:vehicleportaladmin/utils/file_upload.dart';
 
 import 'add rental.dart';
 import 'con.dart';
@@ -24,6 +25,7 @@ class _AddtransState extends State<Addtrans> {
   var vehicle = TextEditingController();
   var location = TextEditingController();
   var seat =TextEditingController();
+  var price = TextEditingController();
   var RC = TextEditingController();
   var insurance = TextEditingController();
   var driving_licence = TextEditingController();
@@ -35,31 +37,32 @@ class _AddtransState extends State<Addtrans> {
       "number_of_seats":seat.text,
       "location": location.text,
       "RC": RC.text,
+      "price": price.text,
       "insurance": insurance.text,
       "dl": driving_licence.text,
       "upload_photo": upload_photo.text,
 
     };
     print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$data');
-    var response = await post(Uri.parse('${Con.url}add transportation.php'), body: data);
-    print(response.body);
-    if (response.statusCode == 200) {
-      var res = jsonDecode(response.body)["message"];
-      if (res == 'added') {
-        const snackBar = SnackBar(content: Text("successfully"),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        // Fluttertoast.showToast(msg: 'Successfully added...');
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return Mainmenu1();
-        }
-        ));
-      }
-      else {
-        Fluttertoast.showToast(msg: 'Invalid ');
-      }
-    }
-
+    // var response = await post(Uri.parse('${Con.url}add_transportation.php'), body: data);
+    // print(response.body);
+    // if (response.statusCode == 200) {
+    //   var res = jsonDecode(response.body)["message"];
+    //   if (res == 'added') {
+    //     const snackBar = SnackBar(content: Text("successfully"),
+    //     );
+    //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    //     // Fluttertoast.showToast(msg: 'Successfully added...');
+    //     Navigator.push(context, MaterialPageRoute(builder: (context) {
+    //       return Mainmenu1();
+    //     }
+    //     ));
+    //   }
+    //   else {
+    //     Fluttertoast.showToast(msg: 'Invalid ');
+    //   }
+    // }
+    // addTranspotation(imageFile, rc, insurance, driving, photo, url, params)
   }
   @override
   Widget build(BuildContext context) {
@@ -73,7 +76,7 @@ class _AddtransState extends State<Addtrans> {
         child:ListView(
 
           children:[
-            Expanded(child: Text('ADD transportation vehicles', style:  TextStyle(height: 3.0, fontSize: 15.2, fontWeight: FontWeight.bold,))),
+
             Padding(padding: EdgeInsets.all(10),
               child:Card(
                 child: TextField(
@@ -99,7 +102,7 @@ class _AddtransState extends State<Addtrans> {
             Padding(padding: EdgeInsets.all(10),
               child:Card(
                 child: TextField(
-                  controller: seat,
+                  controller: price,
                   decoration: InputDecoration(
                       border:OutlineInputBorder(),
                       labelText: "price",hintText: "price"
@@ -124,7 +127,7 @@ class _AddtransState extends State<Addtrans> {
                   controller: RC,
                   decoration: InputDecoration(
                       border:OutlineInputBorder(),
-                      labelText: "RC",hintText: "enter your RC no:"
+                      labelText: "RC",hintText: "upload RC :"
                   ),
                 ),
               ),
@@ -135,7 +138,7 @@ class _AddtransState extends State<Addtrans> {
                   controller: insurance,
                   decoration: InputDecoration(
                       border:OutlineInputBorder(),
-                      labelText: "Insurance",hintText: "enter your policy no;"
+                      labelText: "Insurance",hintText: "Upload Insurance :"
                   ),
                 ),
               ),
@@ -146,7 +149,7 @@ class _AddtransState extends State<Addtrans> {
                   controller:driving_licence ,
                   decoration: InputDecoration(
                       border:OutlineInputBorder(),
-                      labelText: "driving licencd",hintText: "enter your licence no"
+                      labelText: "driving licencd",hintText: "upload driving licence :"
                   ),
                 ),
               ),
@@ -157,7 +160,7 @@ class _AddtransState extends State<Addtrans> {
                   controller: upload_photo,
                   decoration: InputDecoration(
                       border:OutlineInputBorder(),
-                      labelText: "Upload photo",hintText: "Upload file"
+                      labelText: "Upload photo",hintText: "Upload photo :"
                   ),
                 ),
               ),

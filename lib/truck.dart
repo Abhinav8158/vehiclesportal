@@ -59,8 +59,8 @@ class _TruckState extends State<Truck> {
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
-                        return Bok(
-                            id: snapshot.data![0]['transportation_id']);
+                        return Bok();
+
                       },
                     ));
                   },

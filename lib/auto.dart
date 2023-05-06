@@ -53,7 +53,7 @@ class _AutoState extends State<Auto> {
             itemBuilder: (context, index) {
               return ListTile(
                 title: Text(snapshot.data![index]['vehicle']),
-                // subtitle: Text(snapshot.data![0]['price']),
+                subtitle: Text(snapshot.data![0]['location']),
                 leading: Image.network(
                   'https://thumbs.dreamstime.com/z/little-baby-crawl-reading-big-book-isolated-white-background-baby-student-100046244.jpg',
                   width: 80,
@@ -63,8 +63,7 @@ class _AutoState extends State<Auto> {
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
-                        return Bok(
-                            id: snapshot.data![0]['transportation_id']);
+                        return Bok();
                       },
                     ));
                   },

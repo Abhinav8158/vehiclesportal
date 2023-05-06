@@ -10,6 +10,11 @@ class Bokrent extends StatefulWidget {
 }
 
 class _BokrentState extends State<Bokrent> {
+  final List=[
+    'Aadhar','Voter ID','Driving licence','Passport'];
+  final List1=[
+    'Car','Bike',];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,120 +26,165 @@ class _BokrentState extends State<Bokrent> {
         child: ListView(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
               child: Container(
-                width: 100,
-                child: TextField(
+                child: TextFormField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
-
                     ),
-                    labelText:"Name",hintText: "Name ",
+                    labelText: " Name",
+                    hintText: " Name",
                   ),
                   keyboardType: TextInputType.name,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Name is required';
+                    }
+                    return null;
+                  },
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
               child: Container(
-                width: 100,
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-
-                    ),
-                    labelText:"Phone no",hintText: "Phone no ",
-                  ),
-                  keyboardType: TextInputType.name,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
-              child: Container(
-                width: 100,
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-
-                    ),
-                    labelText:"Address",hintText: "Address ",
-                  ),
-                  keyboardType: TextInputType.name,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
-              child: Container(
-                width: 100,
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-
-                    ),
-                    labelText:"date",hintText: "date",
-                  ),
-                  keyboardType: TextInputType.name,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
-              child: Container(
-                width: 100,
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-
-                    ),
-                    labelText:"last date",hintText: "lastdate",
-                  ),
-                  keyboardType: TextInputType.name,
-                ),
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
-              child: Container(
-                width: 100,
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-
-                    ),
-                    labelText:"Vehicle",hintText: "Vehicle",
-                  ),
-                  keyboardType: TextInputType.name,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
-              child: Container(
-                width: 100,
-                child: TextField(
+                child: TextFormField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
                     ),
-                    labelText:"Select proof",hintText: "Select proof ",
+                    labelText: "Phone number",
+                    hintText: "Phone number",
                   ),
                   keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Phone number is required";
+                    }
+                    if (value.length != 10) {
+                      return "Please enter a valid 10-digit phone number";
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+              child: Container(
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    labelText: "Address",
+                    hintText: "Address",
+                  ),
+                  keyboardType: TextInputType.name,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Address is required';
+                    }
+                    return null;
+                  },
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
-              child: Container(
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),              child: Container(
+                width: 100,
+                child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    labelText: "Starts Date",
+                    hintText: "Starts date",
+                  ),
+                  keyboardType: TextInputType.datetime,
+                  onTap: () async {
+                    DateTime? datepick = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2025),
+                    );
+                    if (datepick != null) {
+                      print('Date starts: ${datepick.year}-${datepick.month}-${datepick.day}');
+                    }
+                  },
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),              child: Container(
+                width: 100,
+                child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    labelText: "End Date",
+                    hintText: "End Date",
+                  ),
+                  keyboardType: TextInputType.datetime,
+                  onTap: () async {
+                    DateTime? datepick = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2025),
+                    );
+                    if (datepick != null) {
+                      print('End date: ${datepick.year}-${datepick.month}-${datepick.day}');
+                    }
+                  },
+                ),
+              ),
+            ),
+
+
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),              child:DropdownButtonFormField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    )
+                ),
+
+
+                hint: Text('Select Vehicle'),
+                items:List1.map((e) {
+                  return DropdownMenuItem(
+                      value: e,
+                      child:Text(e));
+                }).toList(), onChanged: (value){}),
+
+
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),              child:DropdownButtonFormField(
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      )
+                  ),
+
+
+                  hint: Text('Select Proof'),
+                  items:List.map((e) {
+                    return DropdownMenuItem(
+                        value: e,
+                        child:Text(e));
+                  }).toList(), onChanged: (value){}),
+
+
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),              child: Container(
                 width: 100,
                 child: TextField(
                   decoration: InputDecoration(
@@ -147,37 +197,6 @@ class _BokrentState extends State<Bokrent> {
                 ),
               ),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
-            //   child: Container(
-            //     width: 100,
-            //     child: TextField(
-            //       decoration: InputDecoration(
-            //         border: OutlineInputBorder(
-            //           borderRadius: BorderRadius.circular(30.0),
-            //
-            //         ),
-            //         labelText:"Payment",hintText: "Payment",
-            //       ),
-            //       keyboardType: TextInputType.emailAddress,
-            //     ),
-            //   ),
-            // ),
-            // Padding(
-            //   padding: const EdgeInsets.only(left:80.0,right: 20.0,top:10.0),
-            //   child: Container(
-            //     width: 100,
-            //     child: TextField(
-            //       decoration: InputDecoration(
-            //         border: OutlineInputBorder(
-            //           borderRadius: BorderRadius.circular(30.0),
-            //         ),
-            //         labelText:"Password",hintText: "Password",
-            //       ),
-            //       obscureText: true,
-            //     ),
-            //   ),
-            // ),
 
             Padding(
               padding: const EdgeInsets.all(8.0),
